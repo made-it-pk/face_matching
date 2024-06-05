@@ -16,5 +16,5 @@
 - [x] Basic Siamese Network using Resnet
 - [ ] Data Preparation
 - [ ] Splitting Data
-- [ ] Training
+- [x] Training
 - [ ] Testing and Evaluation
