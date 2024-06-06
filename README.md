@@ -13,8 +13,9 @@
 ## TODO
 - [x] Overview of the Structure
 - [x] Triplet Loss
-- [x] Basic Siamese Network using Resnet
-- [ ] Data Preparation
-- [ ] Splitting Data
+- [x] Siamese Network using Resnet and other networks
+- [x] Data Preparation
+- [x] Splitting Data
 - [x] Training
+- [x] Creating Triplets
 - [ ] Testing and Evaluation
