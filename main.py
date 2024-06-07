@@ -42,6 +42,19 @@ else:
 print('\n\nStarting the Training...\n\n')
 
 
+# Initialize wandb
+wandb.init(project='siamese_network_training', config={
+    "model_name": model_name,
+    "embedding_size": EMBEDDING_SIZE,
+    "num_epochs": NUM_EPOCHS,
+    "learning_rate": LEARNING_RATE,
+    "batch_size": BATCH_SIZE,
+    "loss_type": 'Euclidean' if loss_type == 1 else 'Cosine Similarity',
+    "train_csv_file_path": TRAIN_CSV_FILE_PATH
+})
+config = wandb.config
+
+
 # Loading the model
 model = SiameseNetwork(model_name=model_name, embedding_size=EMBEDDING_SIZE).to(device)
 
@@ -84,6 +97,12 @@ for epoch in range(NUM_EPOCHS):
 
     avg_loss = epoch_loss / len(triplet_dataloader)
     print(f"Epoch [{epoch+1}/{NUM_EPOCHS}], Loss: {avg_loss:.6f}")
+    
+    # Log the average loss for this epoch to wandb
+    wandb.log({"epoch": epoch+1, "loss": avg_loss})
 
+model_save_path = 'siamese_network.pth'
 # Save the model
-torch.save(model.state_dict(), 'siamese_network.pth')
+torch.save(model.state_dict(), model_save_path)
+wandb.save(model_save_path)
+
