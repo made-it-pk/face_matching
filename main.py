@@ -7,8 +7,7 @@ from tqdm import tqdm
 from torchvision import transforms
 from torch.utils.data import DataLoader
 from dataset import TripletDataset
-
-
+import wandb
 # Define the device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -16,9 +15,8 @@ print('Please Enter the Choice for the Model to be used for training...')
 print('1. resnet18')
 print('2. resnet34')
 print('3. efficient_net_v2_s')
-print('---------------------')
-print('')
 number = int(input("Please enter the number: "))
+print('---------------------')
 if number == 1:
     model_name = 'resnet18'
 elif number == 2:
@@ -31,12 +29,11 @@ print('\n')
 print('Please Enter the Choice of loss function to be used for Triplet loss calculation...')
 print('1. Euclidean')
 print('2. Cosine Similarity')
-print('---------------------')
-print('')
 loss_type = int(input("Please enter the number: "))
-if number == 1:
+print('---------------------')
+if loss_type == 1:
     distance_metric = 'euclidean'
-elif number == 2:
+elif loss_type == 2:
     distance_metric = 'cosine'
 else:
     raise ValueError(f"Unsupported loss type number..!!")
@@ -86,7 +83,7 @@ for epoch in range(NUM_EPOCHS):
         epoch_loss += loss.item()
 
     avg_loss = epoch_loss / len(triplet_dataloader)
-    print(f"Epoch [{epoch+1}/{NUM_EPOCHS}], Loss: {avg_loss:.4f}")
+    print(f"Epoch [{epoch+1}/{NUM_EPOCHS}], Loss: {avg_loss:.6f}")
 
 # Save the model
 torch.save(model.state_dict(), 'siamese_network.pth')
