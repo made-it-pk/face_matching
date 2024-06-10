@@ -8,6 +8,8 @@ from torchvision import transforms
 from torch.utils.data import DataLoader
 from dataset import TripletDataset
 import wandb
+import importlib.util
+
 # Define the device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -15,6 +17,8 @@ print('Please Enter the Choice for the Model to be used for training...')
 print('1. resnet18')
 print('2. resnet34')
 print('3. efficient_net_v2_s')
+print('4. Custom model')
+
 number = int(input("Please enter the number: "))
 print('---------------------')
 if number == 1:
@@ -23,8 +27,20 @@ elif number == 2:
     model_name = 'resnet34'
 elif number == 3:
     model_name = 'efficient_net_v2_s'
+elif number == 4:
+    model_name = 'custom'
+    
+    custom_model_path = input("Please enter the path to the custom model script: ")
+    custom_class_name = input("Please enter the name of the custom model class: ")
+    
+    spec = importlib.util.spec_from_file_location("custom_model", custom_model_path)
+    
+    custom_model = importlib.util.module_from_spec(spec)
+    
+    spec.loader.exec_module(custom_model)
 else:
     raise ValueError(f"Unsupported model number..!!")
+
 print('\n')
 print('Please Enter the Choice of loss function to be used for Triplet loss calculation...')
 print('1. Euclidean')
@@ -56,7 +72,12 @@ config = wandb.config
 
 
 # Loading the model
-model = SiameseNetwork(model_name=model_name, embedding_size=EMBEDDING_SIZE).to(device)
+if model_name == 'custom':
+    # Dynamically get the class from the imported custom_model module
+    CustomModelClass = getattr(custom_model, custom_class_name)
+    model = CustomModelClass(embedding_size=EMBEDDING_SIZE).to(device)
+else:
+    model = SiameseNetwork(model_name=model_name, embedding_size=EMBEDDING_SIZE).to(device)
 
 #loading the loss function class
 criterion = TripletLoss(distance_metric=distance_metric)

@@ -14,7 +14,7 @@ class SiameseNetwork(nn.Module):
             self.model.fc = nn.Linear(self.model.fc.in_features, embedding_size)
         elif model_name == 'efficientnetv2s':
             self.model = models.efficientnet_v2_s(weights = 'EfficientNet_V2_S_Weights')
-            self.model.fc = nn.Linear(self.model.fc.in_features, embedding_size)
+            self.model.fc = nn.Linear(self.model.classifier[1].in_features, embedding_size)
         else:
             raise ValueError(f"Unsupported model name: {model_name}")
 
