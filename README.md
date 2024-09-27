@@ -1,22 +1,36 @@
 # Face Matching
 
-## Overview
+## 1. Overview
+This repo offers code for training,testing, and inference for Siamese Neural Networks for face recognition. The code can also be adapted for other use cases beyond face recognition.
 
-## Setup
+## 2. Features
+- Switch network backbone
+- Use wandb for logging training experiments
+- Test/evaluate
+- Run inference
+- Use KNN to improve detection results
 
-## Train
+## 3. Setup
+1. Create a python 3.8+ environment using miniconda:
+~~~bash
+conda create -n face_matching python=3.8
+~~~
+2. Activate the environment.
+3. Run:
+~~~bash
+pip install -r requirements.txt
+~~~
 
-## Test/Evaluate
+## 4. Train
+1. Adjust config in config.py
+2. Use date_preprocessing.py to generate triplets.
+3. Use main.py to train.
 
-## Inference
+## 5. Test/Evaluate
+1. Use testing_main.py to test.
+
+## 6. Inference
+1. We provide jupyter notebook showing example inference code at `facenet_knn/main.ipynb`
 
 ## TODO
-- [x] Overview of the Structure
-- [x] Creating Triplets
-- [x] Data Preparation
-- [x] Triplet Loss
-- [x] Siamese Network using Resnet and other networks
-- [x] Custom Choice for user for network and Loss selection before training
-- [x] Splitting Data
-- [x] Training
-- [x] Testing and Evaluation
+- [ ] Refactoring
